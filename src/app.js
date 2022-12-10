@@ -3,6 +3,12 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
+app.get('', (req, res) => {
+    res.render('index', {
+        title: 'Weather App'
+    })
+})
+
 app.get("*", (req,res) => {
     res.send("page not found");
 });
