@@ -22,11 +22,36 @@ app.get('', (req, res) => {
     res.render('index', {
         title: 'Weather App'
     })
-})
-
-app.get("*", (req,res) => {
-    res.send("page not found");
 });
+
+app.get('/weather', (req, res) => {
+    const address = req.query.address
+    if(!address) {
+        return res.send({
+            error: "You must enter address in search text box"
+        })
+    }
+
+    weatherData(address, (error, {temperature, description, cityName} = {}) => {
+        if(error) {
+            return res.send({
+                error
+            })
+        }
+        console.log(temperature, description, cityName);
+        res.send({
+            temperature,
+            description,
+            cityName
+        });
+    });
+});
+
+app.get("*", (req, res) => {
+    res.render('404', {
+        title: "page not found"
+    })
+})
 
 app.listen(port, () => {
     console.log("server is running on port ",port);
